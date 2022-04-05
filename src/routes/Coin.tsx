@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import {
   Route,
   Routes,
@@ -101,7 +101,10 @@ const Coin = () => {
   );
   const { isLoading: thickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId!)
+    () => fetchCoinTickers(coinId!),
+    {
+      refetchInterval: 5000,
+    }
   );
 
   // const [loading, setLoading] = useState(true);
@@ -189,6 +192,9 @@ const Coin = () => {
 
   return (
     <Container>
+      <Helmet>
+        <title>{name ? name : loading ? "Loading..." : infoData?.name}</title>
+      </Helmet>
       <Header>
         <Title>{name ? name : loading ? "Loading..." : infoData?.name}</Title>
       </Header>
@@ -206,8 +212,8 @@ const Coin = () => {
               <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price:</span>
+              <span>{tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -235,7 +241,7 @@ const Coin = () => {
 
       <Routes>
         <Route path={`price`} element={<Price />} />
-        <Route path={`chart`} element={<Chart />} />
+        <Route path={`chart`} element={<Chart coinId={coinId!} />} />
       </Routes>
     </Container>
   );
