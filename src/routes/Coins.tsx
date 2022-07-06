@@ -68,16 +68,17 @@ interface ICoin {
 }
 
 const Coins = () => {
-  const [coins, setCoins] = useState<ICoin[]>([]);
-  const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("https://api.coinpaprika.com/v1/coins");
-      const json = await response.json();
-      setCoins(json.slice(0, 100));
-      setLoading(false);
-    })();
-  }, []);
+  const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+  // const [coins, setCoins] = useState<ICoin[]>([]);
+  // const [isLoading, setLoading] = useState(true);
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch("https://api.coinpaprika.com/v1/coins");
+  //     const json = await response.json();
+  //     setCoins(json.slice(0, 100));
+  //     setLoading(false);
+  //   })();
+  // }, []);
   // const setDarkAtom = useSetRecoilState(isDarkAtom);
   // const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   // const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
@@ -95,7 +96,7 @@ const Coins = () => {
         <Loader>Loading...</Loader>
       ) : (
         <CoinsList>
-          {coins.map((coin) => (
+          {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
               {/* Link태그의 state속성값은 데이터를 다른 호마ㅕㄴ으로 보낼 수 있음. */}
               <Link to={`/${coin.id}`} state={coin.name}>
