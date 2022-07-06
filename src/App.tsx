@@ -79,7 +79,7 @@ function App() {
   return (
     <>
       {/* <ThemeProvider theme={isDark ? darkTheme : lightTheme}> */}
-      {/* <GlobalStyle /> */}
+      <GlobalStyle />
       <Router />
       {/* <ReactQueryDevtools initialIsOpen={true} /> */}
       {/* </ThemeProvider> */}
