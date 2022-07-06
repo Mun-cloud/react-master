@@ -10,22 +10,22 @@ export const fetchCoins = async () => {
 };
 
 // // Coin.js 코인 정보 조회
-// export const fetchCoinInfo = async (coinId: string) => {
-//   return await (await fetch(`${BASE_URL}/coins/${coinId}`)).json();
-// };
+export const fetchCoinInfo = async (coinId: string) => {
+  return await (await fetch(`${BASE_URL}/coins/${coinId}`)).json();
+};
 
 // // Coin.js 코인 시세 정보 조회
-// export const fetchCoinTickers = async (coinId: string) => {
-//   return await (await fetch(`${BASE_URL}/tickers/${coinId}`)).json();
-// };
+export const fetchCoinTickers = async (coinId: string) => {
+  return await (await fetch(`${BASE_URL}/tickers/${coinId}`)).json();
+};
 
 // // 코인 가격 변동 조회
-// export const fetchCoinHistory = async (coinId: string) => {
-//   const endDate = Math.floor(Date.now() / 1000);
-//   const startDate = endDate - 60 * 60 * 24 * 7 * 2;
-//   return await (
-//     await fetch(
-//       `${BASE_URL}/coins/${coinId}/ohlcv/historical?start=${startDate}&end=${endDate}`
-//     )
-//   ).json();
-// };
+export const fetchCoinHistory = async (coinId: string) => {
+  const endDate = Math.floor(Date.now() / 1000);
+  const startDate = endDate - 60 * 60 * 24 * 7 * 2;
+  return await (
+    await fetch(
+      `${BASE_URL}/coins/${coinId}/ohlcv/historical?start=${startDate}&end=${endDate}`
+    )
+  ).json();
+};
