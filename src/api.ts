@@ -1,4 +1,5 @@
 const BASE_URL = `https://api.coinpaprika.com/v1`;
+const Nico_URL = "https://ohlcv-api.nomadcoders.workers.dev?coinId="
 
 // Coins.js 전체 코인 목록 조회
 export const fetchCoins = async () => {
@@ -21,11 +22,11 @@ export const fetchCoinTickers = async (coinId: string) => {
 
 // // 코인 가격 변동 조회
 export const fetchCoinHistory = async (coinId: string) => {
-  const endDate = Math.floor(Date.now() / 1000);
-  const startDate = endDate - 60 * 60 * 24 * 7 * 2;
+  // const endDate = Math.floor(Date.now() / 1000);
+  // const startDate = endDate - 60 * 60 * 24 * 7 * 2;
   return await (
     await fetch(
-      `${BASE_URL}/coins/${coinId}/ohlcv/historical?start=${startDate}&end=${endDate}`
+      `${Nico_URL}${coinId}`
     )
   ).json();
 };
