@@ -20,18 +20,17 @@ interface ChartProps {
 }
 
 const Chart = ({ coinId }: ChartProps) => {
-  // const isDark = useRecoilValue(isDarkAtom);
-  // const { isLoading, data } = useQuery<IHistorical[]>(
-  //   ["ohlcv", coinId],
-  //   () => fetchCoinHistory(coinId),
-  //   {
-  //     refetchInterval: 5000,
-  //   }
-  // );
+  const isDark = useRecoilValue(isDarkAtom);
+  const { isLoading, data } = useQuery<IHistorical[]>(
+    ["ohlcv", coinId],
+    () => fetchCoinHistory(coinId),
+    {
+      refetchInterval: 5000,
+    }
+  );
   return (
     <div>
-      chart
-      {/* {isLoading ? (
+      {isLoading ? (
         "Loading chart..."
       ) : (
         <ApexChart
@@ -63,7 +62,9 @@ const Chart = ({ coinId }: ChartProps) => {
               axisTicks: { show: false },
               labels: { show: false },
               type: "datetime",
-              categories: data?.map((price) => price.time_close),
+              categories: data?.map(
+                (price) => (price.time_close as any) * 1000 ?? []
+              ),
             },
             fill: {
               type: "gradient",
@@ -77,7 +78,7 @@ const Chart = ({ coinId }: ChartProps) => {
             },
           }}
         />
-      )} */}
+      )}
     </div>
   );
 };

@@ -23,10 +23,11 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: white;
+  background-color: ${(props) => props.theme.cardBgColor};
   color: ${(props) => props.theme.textColor};
   border-radius: 15px;
   margin-bottom: 10px;
+  border: 1px solid white;
 
   a {
     padding: 20px;
@@ -69,19 +70,8 @@ interface ICoin {
 
 const Coins = () => {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
-  // const [coins, setCoins] = useState<ICoin[]>([]);
-  // const [isLoading, setLoading] = useState(true);
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch("https://api.coinpaprika.com/v1/coins");
-  //     const json = await response.json();
-  //     setCoins(json.slice(0, 100));
-  //     setLoading(false);
-  //   })();
-  // }, []);
-  // const setDarkAtom = useSetRecoilState(isDarkAtom);
-  // const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
-  // const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
 
   return (
     <Container>
@@ -90,7 +80,7 @@ const Coins = () => {
       </Helmet>
       <Header>
         <Title>코인</Title>
-        {/* <button onClick={toggleDarkAtom}>Toggle Mode</button> */}
+        <button onClick={toggleDarkAtom}>Toggle Mode</button>
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>
@@ -98,7 +88,7 @@ const Coins = () => {
         <CoinsList>
           {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
-              {/* Link태그의 state속성값은 데이터를 다른 호마ㅕㄴ으로 보낼 수 있음. */}
+              {/* Link태그의 state속성값은 데이터를 다른 화면으로 보낼 수 있음. */}
               <Link to={`/${coin.id}`} state={coin.name}>
                 <Img
                   src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
