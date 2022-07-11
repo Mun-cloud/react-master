@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilValue } from "recoil";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
 // import { toDoSelector, toDoState } from "./atoms";
 // import CreateToDo from "./components/CreateToDo";
 // import ToDo from "./components/ToDo";
@@ -117,20 +117,37 @@ import { useRecoilValue } from "recoil";
 //   );
 // }
 
+const toDoState = atom<IToDo[]>({
+  key: "toDo",
+  default: [],
+});
+
 interface IForm {
   toDo: string;
 }
 
-const ToDoList = () => {
-  const { register, handleSubmit, setValue } = useForm<IForm>();
+interface IToDo {
+  text: string;
+  id: number;
+  category: "TO_DO" | "DOING" | "DONE";
+}
 
-  const onSubmit = (data: IForm) => {
-    console.log("add to do", data.toDo);
-    setValue("toDo", "");
+const ToDoList = () => {
+  const [toDos, setToDos] = useRecoilState(toDoState);
+  const { register, handleSubmit, setValue } = useForm<IForm>();
+  const handleValid = ({ toDo }: IForm) => {
+    setToDos((oldToDos) => [
+      { text: toDo, id: Date.now(), category: "TO_DO" },
+      ...oldToDos,
+    ]);
+    setValue("toDo", ""); // "name"에 해당하는 항목을 두 번째 인자의 값으로 변환
   };
+  console.log(toDos);
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <h1>To Dos</h1>
+      <hr />
+      <form onSubmit={handleSubmit(handleValid)}>
         <input
           {...register("toDo", {
             required: "내용을 입력해 주세요",
@@ -139,6 +156,11 @@ const ToDoList = () => {
         />
         <button>Add</button>
       </form>
+      <ul>
+        {toDos.map((toDo) => (
+          <li key={toDo.id}>{toDo.text}</li>
+        ))}
+      </ul>
     </div>
   );
 };
