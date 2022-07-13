@@ -1,33 +1,29 @@
-import React from "react";
-import { useRecoilState } from "recoil";
-import { hourSelector, minuteState } from "./atoms";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function App() {
-  // 첫번째 array의 값 : atom의 값
-  const [minutes, setMinutes] = useRecoilState(minuteState);
-  // 첫번째 array의 값 : selector의 get 함수
-  const [hours, setHours] = useRecoilState(hourSelector);
-  const onMinutesChange = (event: React.FormEvent<HTMLInputElement>) => {
-    setMinutes(+event.currentTarget.value);
-  };
-  const onHoursChange = (event: React.FormEvent<HTMLInputElement>) => {
-    setHours(+event.currentTarget.value);
-  };
+  const onDragEnd = () => {};
   return (
-    <div>
-      <input
-        onChange={onMinutesChange}
-        value={minutes}
-        type="number"
-        placeholder="Minutes"
-      />
-      <input
-        onChange={onHoursChange}
-        value={hours}
-        type="number"
-        placeholder="Hours"
-      />
-    </div>
+    // onDragEnd : 드래그를 마치면 발생하는 event
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div>
+        {/* 아이디값(droppableId) 필요 */}
+        <Droppable droppableId="one">
+          {/* 함수를 내용으로 사용해야 함 */}
+          {() => (
+            <ul>
+              {/* 아이디값(draggableId), index(sorting을 위해) 필요 */}
+              <Draggable draggableId="first" index={0}>
+                {/* 함수를 내용으로 새용해야 함 */}
+                {() => <li>One</li>}
+              </Draggable>
+              <Draggable draggableId="second" index={1}>
+                {() => <li>Two</li>}
+              </Draggable>
+            </ul>
+          )}
+        </Droppable>
+      </div>
+    </DragDropContext>
   );
 }
 
