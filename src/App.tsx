@@ -31,19 +31,39 @@ function App() {
    */
   const onDragEnd = (info: DropResult) => {
     const { draggableId, destination, source } = info;
+    if (!destination) return;
     // 같은 Board에서 움직였을 때
-    if (source.droppableId === destination?.droppableId) {
-      setToDos((oldToDos) => {
+    if (source.droppableId === destination.droppableId) {
+      setToDos((allBoards) => {
         // 변화가 일어난 board의 값만 새로운 배열로 복사한다.
         // 기존의 값을 그냥 return하게 되는 경우엔 변동이 없음으로 인지함으로 새로운 배열 생성
-        const boardCopy = [...oldToDos[source.droppableId]];
+        const boardCopy = [...allBoards[source.droppableId]];
+        // source.index값으로 선택한 Object를 지정함.
+        const taskObj = boardCopy[source.index];
         // 1) source.index에 해당하는 값을 지움
         boardCopy.splice(source.index, 1);
-        // 2) destination.index에 해당하는 위치에 draggableId를 넣음
-        boardCopy.splice(destination?.index, 0, draggableId);
+        // 2) destination.index에 해당하는 위치에 지정된 taskObj를 넣음
+        boardCopy.splice(destination.index, 0, taskObj);
         return {
-          ...oldToDos,
+          ...allBoards,
           [source.droppableId]: boardCopy,
+        };
+      });
+    }
+    // 다른 board로 넘길 때
+    if (source.droppableId !== destination.droppableId) {
+      setToDos((allBoards) => {
+        const sourceBoard = [...allBoards[source.droppableId]];
+        const destinationBoard = [...allBoards[destination.droppableId]];
+        const taskObj = sourceBoard[source.index];
+        // 1) source.index에 해당하는 값을 지움
+        sourceBoard.splice(source.index, 1);
+        // 2) destination.index에 해당하는 위치에 draggableId를 넣음
+        destinationBoard.splice(destination.index, 0, taskObj);
+        return {
+          ...allBoards,
+          [source.droppableId]: sourceBoard,
+          [destination.droppableId]: destinationBoard,
         };
       });
     }
@@ -53,8 +73,12 @@ function App() {
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
         <Boards>
-          {Object.keys(toDos).map((boardId) => (
-            <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
+          {Object.keys(toDos).map((boardName) => (
+            <Board
+              boardName={boardName}
+              key={boardName}
+              toDos={toDos[boardName]}
+            />
           ))}
         </Boards>
       </Wrapper>

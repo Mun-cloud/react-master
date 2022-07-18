@@ -2,31 +2,35 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-const Card = styled.div`
+const Card = styled.div<{ isDragging: boolean }>`
   border-radius: 5px;
   padding: 10px 10px;
   margin-bottom: 5px;
-  background-color: ${(props) => props.theme.cardColor};
+  background-color: ${(props) =>
+    props.isDragging ? "#74b9ff" : props.theme.cardColor};
+  box-shadow: ${(props) =>
+    props.isDragging ? "0px 2px 5px rgba(0,0,0,0.05)" : "none"};
 `;
 
 interface DraggableCardProps {
-  toDo: string;
+  toDoId: number;
+  toDoText: string;
   index: number;
 }
 
-function DraggableCard({ toDo, index }: DraggableCardProps) {
-  console.log(toDo, "렌더링 됨");
+function DraggableCard({ toDoId, toDoText, index }: DraggableCardProps) {
   return (
     // Draggable의 키와 Id값은 같아야 함
-    <Draggable key={toDo} draggableId={toDo} index={index}>
+    <Draggable draggableId={toDoId + ""} index={index}>
       {/* 함수를 내용으로 새용해야 함 */}
-      {(magic) => (
+      {(magic, snapshot) => (
         <Card
+          isDragging={snapshot.isDragging}
           ref={magic.innerRef}
           {...magic.dragHandleProps}
           {...magic.draggableProps}
         >
-          {toDo}
+          {toDoText}
         </Card>
       )}
     </Draggable>
