@@ -11,22 +11,62 @@ const Wrapper = styled.div`
 const Box = styled(motion.div)`
   width: 200px;
   height: 200px;
-  background-color: white;
-  border-radius: 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
+
+const Circle = styled(motion.div)`
+  background-color: white;
+  height: 70px;
+  width: 70px;
+  place-self: center;
+  border-radius: 35px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
+const boxVariants = {
+  start: {
+    opacity: 0,
+    scale: 0.5,
+  },
+  end: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delay: 0.5,
+      type: "spring",
+      duration: 0.5,
+      bounce: 0.5,
+      delayChildren: 0.7,
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const circleVariants = {
+  start: {
+    opacity: 0,
+    y: 10,
+  },
+  end: {
+    opacity: 1,
+    y: 0,
+  },
+};
+
 function App() {
   return (
     <Wrapper>
       {/* intitial에는 원하는 초기 상태를 넣어주기 */}
-      <Box
-        transition={{
-          type: "spring",
-          duration: 6,
-        }}
-        initial={{ scale: 0 }}
-        animate={{ scale: 1, rotateZ: 360 }}
-      />
+      <Box variants={boxVariants} initial="start" animate="end">
+        <Circle variants={circleVariants} />
+        <Circle variants={circleVariants} />
+        <Circle variants={circleVariants} />
+        <Circle variants={circleVariants} />
+      </Box>
     </Wrapper>
   );
 }
