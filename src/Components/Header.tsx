@@ -1,15 +1,14 @@
 import styled from "styled-components";
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { Link, useMatch } from "react-router-dom";
-import { useState } from "react";
-const Nav = styled.nav`
+import { useEffect, useState } from "react";
+const Nav = styled(motion.nav)`
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed;
   width: 100%;
   top: 0;
-  background-color: black;
   font-size: 14px;
   padding: 20px 60px;
   color: white;
@@ -100,21 +99,41 @@ function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
+  const { scrollY } = useViewportScroll();
+  const navAnimation = useAnimation();
   // 애니메이션 실행을 위한 함수
   const inputAnimation = useAnimation();
   const toggleSearch = () => {
     if (searchOpen) {
       inputAnimation.start({
         scaleX: 0,
+        transition: { duration: 0.4 },
       });
     } else {
-      inputAnimation.start({ scaleX: 1 });
+      inputAnimation.start({ scaleX: 1, transition: { duration: 0.4 } });
     }
     setSearchOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() > 80) {
+        navAnimation.start({
+          backgroundColor: "rgba(0,0,0,1)",
+        });
+      } else {
+        navAnimation.start({
+          backgroundColor: "rgba(0,0,0,0)",
+        });
+      }
+    });
+  }, [scrollY, navAnimation]);
+
   return (
-    <Nav>
+    <Nav
+      animate={navAnimation}
+      initial={{ backgroundColor: "rgba(255,255,255,1)" }}
+    >
       <Col>
         <Logo
           variants={logoVariants}
@@ -142,7 +161,7 @@ function Header() {
         <Search>
           <motion.svg
             onClick={toggleSearch}
-            animate={{ x: searchOpen ? -215 : 0 }}
+            animate={{ x: searchOpen ? -225 : 0 }}
             transition={{ type: "linear" }}
             fill="currentColor"
             viewBox="0 0 20 20"
