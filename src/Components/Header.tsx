@@ -130,7 +130,7 @@ function Header() {
   }, [scrollY, navAnimation]);
 
   return (
-    <Nav animate={navAnimation} initial={{ backgroundColor: "rgba(0,0,0,1)" }}>
+    <Nav animate={navAnimation} initial={{ backgroundColor: "rgba(0,0,0,0)" }}>
       <Col>
         <Logo
           variants={logoVariants}
