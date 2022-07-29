@@ -46,7 +46,7 @@ const Overview = styled.p`
 
 const Slider = styled.div`
   position: relative;
-  top: -100px;
+  top: 0px;
 `;
 
 const Row = styled(motion.div)`
@@ -63,6 +63,7 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   background-size: cover;
   background-position: center center;
   height: 200px;
+  overflow: hidden;
   cursor: pointer;
   &:first-child {
     transform-origin: center left;
@@ -77,7 +78,6 @@ const Info = styled(motion.div)`
   background-color: ${(props) => props.theme.black.lighter};
   opacity: 0;
   position: absolute;
-  width: 100%;
   bottom: 0;
   h4 {
     text-align: center;
@@ -200,7 +200,6 @@ function Home() {
     data?.results.find(
       (movie) => movie.id + "" === bigMovieMatch.params.movieId
     );
-  console.log(clickedMovie);
   return (
     <Wrapper>
       {isLoading ? (
