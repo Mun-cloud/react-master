@@ -35,7 +35,7 @@ const Banner = styled.div<{ bgphoto: string }>`
 `;
 
 const Title = styled.h2`
-  font-size: 68px;
+  font-size: 70px;
   margin-bottom: 20px;
 `;
 
@@ -66,7 +66,7 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   overflow: hidden;
   cursor: pointer;
   &:first-child {
-    transform-origin: center left;
+    transform-origin: cente r left;
   }
   &:last-child {
     transform-origin: center right;
