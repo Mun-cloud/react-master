@@ -35,7 +35,7 @@ const Banner = styled.div<{ bgphoto: string }>`
 `;
 
 const Title = styled.h2`
-  font-size: 70px;
+  font-size: 68px;
   margin-bottom: 20px;
 `;
 
